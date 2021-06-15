@@ -11,8 +11,8 @@ namespace OrderManager.Service
     {
         Task<PagedList<Order>> GetOrders(OrderQueryFilter filters);
         Task<Order> GetOrder(int id);
-        Task InsertOrder(Order order);
-        Task UpdateOrder(Order order);
-        Task DeleteOrder(int id);
+        Task<bool> InsertOrder(Order order);
+        Task<bool> UpdateOrder(Order order);
+        Task<bool> DeleteOrder(int id);
     }
 }

@@ -12,7 +12,7 @@ namespace OrderManager.Service
             _baseUri = baseUri;
         }
 
-        public Uri GetPostPaginationUri(OrderQueryFilter filter, string actionUrl)
+        public Uri GetOrderPaginationUri(OrderQueryFilter filter, string actionUrl)
         {
             string baseUrl = $"{_baseUri}{actionUrl}";
             return new Uri(baseUrl);

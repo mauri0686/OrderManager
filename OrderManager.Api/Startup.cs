@@ -15,6 +15,7 @@ using OrderManager.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using OrderManager.Infrastructure.Filters;
 
 namespace OrderManager.Api
 {
@@ -30,19 +31,21 @@ namespace OrderManager.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddTransient<IOrderService, OrderService>();
-            services.AddScoped(typeof(IRepository<>), typeof( Repository<>));
-            services.AddSingleton<IUriService>(provider =>
+            services.AddAutoMapper(System.AppDomain.CurrentDomain.GetAssemblies());
+            services.AddControllers(options =>
             {
-                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
-                var request = accesor.HttpContext.Request;
-                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
-                return new UriService(absoluteUri);
+                options.Filters.Add<GlobalExceptionFilter>();
+            }).AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
+            services.AddTransient<IOrderService, OrderService>();           
+            services.AddScoped(typeof(IRepository<>), typeof( Repository<>));            
             services.AddDbContext<OrderContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("OrderManager"))
             );
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order Manager", Version = "v1" });

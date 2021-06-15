@@ -6,6 +6,6 @@ namespace OrderManager.Service
 {
     public interface IUriService
     {
-        Uri GetPostPaginationUri(OrderQueryFilter filter, string actionUrl);
+        Uri GetOrderPaginationUri(OrderQueryFilter filter, string actionUrl);
     }
 }

@@ -51,20 +51,23 @@ namespace OrderManager.Service
             var pagedOrders = PagedList<Order>.Create(orders, filters.PageNumber, filters.PageSize);
             return await Task.FromResult(pagedOrders);
         }
-        public async Task InsertOrder(Order Order)
+        public async Task<bool> InsertOrder(Order Order)
         {
               await _repository.Insert(Order);
+            return true;
         }
-        public async Task UpdateOrder(Order Order)
+        public async Task<bool> UpdateOrder(Order Order)
         {
               await _repository.Update(Order);
+            return true;
         }
 
-        public async Task DeleteOrder(int id)
+        public async Task<bool> DeleteOrder(int id)
         {
             var Order = await GetOrder(id);
             await _repository.Remove(Order);
             await _repository.SaveChanges();
+            return true;
         }
     }
 }

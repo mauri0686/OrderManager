@@ -15,7 +15,7 @@ namespace OrderManager.Infrastructure.Repository
     {
         #region property
         private readonly OrderContext _orderContext;
-        private readonly DbSet<T> entities;
+        protected readonly DbSet<T> entities;
         #endregion
 
         #region Constructor
